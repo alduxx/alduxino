@@ -49,12 +49,13 @@ font-family: Arial, Verdana, sans-serif;
     color: #e61d23;
 }
 
+
 #pump.on {
-    background: #FFF url(../img/pumpOn.png) no-repeat center center;
+    background: #FFF url(https://cdn.jsdelivr.net/gh/alduxx/alduxino@d6e11cd42592755bfceaee80830f571d91c2fe58/SolarHeating/static/img/pumpOn.png) no-repeat center center;
 }
 
 #pump.off {
-    background: #FFF url(../img/pumpOff.png) no-repeat center center;
+    background: #FFF url(https://cdn.jsdelivr.net/gh/alduxx/alduxino@d6e11cd42592755bfceaee80830f571d91c2fe58/SolarHeating/static/img/pumpOff.png) no-repeat center center;
 }
 
 .uptime {
