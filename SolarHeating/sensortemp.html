@@ -14,6 +14,23 @@
     <div class="box"><div id="gauge2" class="200x160px"></div></div>
     <div id="pump" class="box off"><h3>Bomba</h3><span>Desligada</span></div>
     <div class="uptime"><strong>Uptime: </strong> 12:20:15</div>
-    <script src="https://cdn.jsdelivr.net/gh/alduxx/alduxino@d6e11cd42592755bfceaee80830f571d91c2fe58/SolarHeating/static/js/script.js"></script>
+    <script>
+    var g = new JustGage({
+        id: "gauge",
+        value: 28,
+        min: 0,
+        max: 100,
+        title: "Temp Paineis",
+      });
+
+      var g = new JustGage({
+        id: "gauge2",
+        value: 80,
+        min: 0,
+        max: 100,
+        title: "Temp Boiler",
+      });
+
+    </script>
 </body>
 </html>

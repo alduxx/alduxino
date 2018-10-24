@@ -71,15 +71,15 @@ void printTempsLCD(){
   dtostrf(sensorTemp1, 4, 1, temp1);
   dtostrf(sensorTemp2, 4, 1, temp2);
   
-  Serial.print("Temp1: ");
-  Serial.println(temp1);
+  //Serial.print("Temp1: ");
+  //Serial.println(temp1);
   lcd.print("["); 
   lcd.print(temp1);
   lcd.print("] "); 
    
    
-  Serial.print("Temp2: ");
-  Serial.println(temp2);  
+  //Serial.print("Temp2: ");
+  //Serial.println(temp2);  
   lcd.print("[");
   lcd.print(temp2);
   lcd.print("] ");  
@@ -109,17 +109,19 @@ void handleRoot() {
   char txt1[32] = "";
   
   digitalWrite(led, 1);
+
+  int temp1 = (int)(sensorTemp1);
+  int temp2 = (int)(sensorTemp2);
+
+  lcd.setCursor(0, 1);
   
-  /*char out[30];
-  snprintf(out, 30, "Temperaturas: %f, %f", sensorTemp1, sensorTemp2);
-  */
+  char html[2000]; 
   
-  char html[1000]; 
-  
-  snprintf ( html, 1000,
+  snprintf ( html, 2000,
 "<!DOCTYPE html>\
 <html lang=\"pt-br\">\
 <head>\
+<meta http-equiv='refresh' content='10'/>\
 <meta charset=\"UTF-8\">\
     <link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.jsdelivr.net/gh/alduxx/alduxino@d6e11cd42592755bfceaee80830f571d91c2fe58/SolarHeating/static/css/estilos.css\">\
     <script src=\"https://cdn.jsdelivr.net/gh/alduxx/alduxino@d6e11cd42592755bfceaee80830f571d91c2fe58/SolarHeating/static/justgage/raphael-2.1.4.min.js\"></script>\
@@ -132,17 +134,31 @@ void handleRoot() {
     <div class=\"box\"><div id=\"gauge2\" class=\"200x160px\"></div></div>\
     <div id=\"pump\" class=\"box off\"><h3>Bomba</h3><span>Desligada</span></div>\
     <div class=\"uptime\"><strong>Uptime: %02d:%02d:%02d</strong></div>\
-    <span>%f</span><span>%f</span>\
-    <script src=\"https://cdn.jsdelivr.net/gh/alduxx/alduxino@d6e11cd42592755bfceaee80830f571d91c2fe58/SolarHeating/static/js/script.js\"></script>\
 </body>\
+    <script type=\"text/javascript\">\
+    var g = new JustGage({\
+        id: \"gauge\",\
+        value: %d,\
+        min: 0,\
+        max: 100,\
+        title: \"Temp Paineis\",\
+      });\
+      var g = new JustGage({\
+        id: \"gauge2\",\
+        value: %d,\
+        min: 0,\
+        max: 100,\
+        title: \"Temp Boiler\",\
+      });\
+    </script>\
 </html>",
     hr, min % 60, sec % 60,
-    sensorTemp1,
-    sensorTemp2
+    temp1,
+    temp2
   );
   
   server.send(200, "text/html", html);
-  //Serial.println(html);
+  // Serial.println(html);
   
   digitalWrite(led, 0);
 }
