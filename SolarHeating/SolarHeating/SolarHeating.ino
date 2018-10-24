@@ -1,17 +1,35 @@
+/*
+  Solar Heating Control
+
+  Uses one nodeMCU board for listening to two DS180 temperature sensor
+  and control a relay (that control the heating system pump) by the
+  difference int the sensors located in the solar panels heat collectors 
+  and in the hot water boiler. This program takes advantage of the onboard
+  wifi capabilities to broadcast the sensors values.
+
+  It also uses a LCD in debuging time to print some information.
+
+  created 2018
+  by Aldo Monteiro
+
+  This example code is in the public domain.
+
+  https://github.com/alduxx/alduxino
+*/
+
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-/********************************************************************/
 #include <OneWire.h> 
 #include <DallasTemperature.h>
-OneWire oneWire(D4);  
-DallasTemperature sensors(&oneWire);
 #include <Wire.h>
 #include <hd44780.h>
 #include <hd44780ioClass/hd44780_I2Cexp.h>
  
-/********************************************************************/
+OneWire oneWire(D4);  
+DallasTemperature sensors(&oneWire);
+
 hd44780_I2Cexp lcd;
 
 const char* ssid = "container_repeater";
@@ -99,23 +117,24 @@ void handleRoot() {
   char html[1000]; 
   
   snprintf ( html, 1000,
-"<html>\
-  <head>\
-    <meta http-equiv='refresh' content='10'/>\
-    <title>ESP8266 WiFi Network</title>\
-    <script src=\"https://raw.githubusercontent.com/alduxx/alduxino/master/SolarHeating/js/justgage.js\"></script>\
-    <style>\
-      body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; font-size: 1.5em; Color: #000000; }\
-      h1 { Color: #AA0000; }\
-    </style>\
-  </head>\
-  <body>\
-    <h1>ESP8266 Wi-Fi Access Point and Web Server Demo</h1>\
-    <p>Uptime: %02d:%02d:%02d</p>\
-    <p>Temperature: %f </p>\
-    <p>%f<p>\
-    <p>This page refreshes every 10 seconds. Click <a href=\"javascript:window.location.reload();\">here</a> to refresh the page now.</p>\
-  </body>\
+"<!DOCTYPE html>\
+<html lang=\"pt-br\">\
+<head>\
+<meta charset=\"UTF-8\">\
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.jsdelivr.net/gh/alduxx/alduxino@d6e11cd42592755bfceaee80830f571d91c2fe58/SolarHeating/static/css/estilos.css\">\
+    <script src=\"https://cdn.jsdelivr.net/gh/alduxx/alduxino@d6e11cd42592755bfceaee80830f571d91c2fe58/SolarHeating/static/justgage/raphael-2.1.4.min.js\"></script>\
+    <script src=\"https://cdn.jsdelivr.net/gh/alduxx/alduxino@d6e11cd42592755bfceaee80830f571d91c2fe58/SolarHeating/static/justgage/justgage.js\"></script>\
+    <title>Casa Container - Sensor Temperatura Aquecedor Solar</title>\
+</head>\
+<body>\
+    <div class=\"cab\">Casa Container - Sensor Temperatura Aquecedor Solar</div>\
+    <div class=\"box\"><div id=\"gauge\" class=\"200x160px\"></div></div>\
+    <div class=\"box\"><div id=\"gauge2\" class=\"200x160px\"></div></div>\
+    <div id=\"pump\" class=\"box off\"><h3>Bomba</h3><span>Desligada</span></div>\
+    <div class=\"uptime\"><strong>Uptime: %02d:%02d:%02d</strong></div>\
+    <span>%f</span><span>%f</span>\
+    <script src=\"https://cdn.jsdelivr.net/gh/alduxx/alduxino@d6e11cd42592755bfceaee80830f571d91c2fe58/SolarHeating/static/js/script.js\"></script>\
+</body>\
 </html>",
     hr, min % 60, sec % 60,
     sensorTemp1,
